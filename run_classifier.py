@@ -207,11 +207,10 @@ class DataProcessor(object):
         lines.append(line)
       return lines
 
-class Classifier(XnliProcessor):
+class Classifier(DataProcessor):
     def __init__(self):
-        super().__init__()
         self.out = []
-        pass
+        self.language = "zh"
     
     def get_train_examples(self,data_dir):
         file_path = os.path.join(data_dir,'finalData.csv')
@@ -219,7 +218,7 @@ class Classifier(XnliProcessor):
         df_train,self.df_test = train_test_split(df,test_size=0.2)
         df_train,self.df_dev = train_test_split(df_train,test_size=0.2)
         label_path = os.path.join(data_dir,'Sale CF.csv')
-        df_out = pd.read_csv(label_path,header,dtype=str)
+        df_out = pd.read_csv(label_path,dtype=str)
         df_out.dropna(subset=['Code'],inplace=True)
         self.out = list(df_out['Code'].values)
         
