@@ -208,19 +208,19 @@ class DataProcessor(object):
       return lines
 
 class Classifier(DataProcessor):
-    def __init__(self):
+    def __init__(self,data_dir):
         self.out = []
         self.language = "zh"
+        label_path = os.path.join(data_dir,'Sale CF.csv')
+        df_out = pd.read_csv(label_path,dtype=str)
+        df_out.dropna(subset=['Code'],inplace=True)
+        self.out = list(df_out['Code'].values)
     
     def get_train_examples(self,data_dir):
         file_path = os.path.join(data_dir,'finalData.csv')
         df = pd.read_csv(file_path)
         df_train,self.df_test = train_test_split(df,test_size=0.2)
         df_train,self.df_dev = train_test_split(df_train,test_size=0.2)
-        label_path = os.path.join(data_dir,'Sale CF.csv')
-        df_out = pd.read_csv(label_path,dtype=str)
-        df_out.dropna(subset=['Code'],inplace=True)
-        self.out = list(df_out['Code'].values)
         
         examples = []
         for index,row in df_train.iterrows():
@@ -435,7 +435,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
         segment_ids=[0] * max_seq_length,
         label_id=0,
         is_real_example=False)
-
+  print(label_list)
   label_map = {}
   for (i, label) in enumerate(label_list):
     label_map[str(label)] = i
@@ -505,7 +505,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(input_ids) == max_seq_length
   assert len(input_mask) == max_seq_length
   assert len(segment_ids) == max_seq_length
-  print(label_list)
+  tf.logging.info(label_map)
   label_id = label_map[str(example.label)]
   if ex_index < 5:
     tf.logging.info("*** Example ***")
@@ -863,7 +863,7 @@ def main(_):
   if task_name not in processors:
     raise ValueError("Task not found: %s" % (task_name))
 
-  processor = processors[task_name]()
+  processor = processors[task_name](FLAGS.data_dir)
 
   label_list = processor.get_labels()
 
