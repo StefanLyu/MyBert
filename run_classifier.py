@@ -435,7 +435,6 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
         segment_ids=[0] * max_seq_length,
         label_id=0,
         is_real_example=False)
-  print(label_list)
   label_map = {}
   for (i, label) in enumerate(label_list):
     label_map[str(label)] = i
