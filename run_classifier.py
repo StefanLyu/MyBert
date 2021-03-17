@@ -228,7 +228,7 @@ class Classifier(DataProcessor):
             text_a = tokenization.convert_to_unicode(str(row[1]))
             text_b = None
             labels=row[3]
-            examples.append(rc.InputExample(guid=guid,text_a=text_a,text_b=text_b,label=labels))
+            examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=labels))
         return examples
     
     def get_dev_examples(self,data_dir):
@@ -238,7 +238,7 @@ class Classifier(DataProcessor):
             text_a = tokenization.convert_to_unicode(str(row[1]))
             text_b = None
             labels=row[3]
-            examples.append(rc.InputExample(guid=guid,text_a=text_a,text_b=text_b,label=labels))
+            examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=labels))
         return examples
     def get_test_examples(self,data_dir):
         self.df_test.to_csv('test.csv',index=False)
@@ -248,7 +248,7 @@ class Classifier(DataProcessor):
             text_a = tokenization.convert_to_unicode(str(row[1]))
             text_b = None
             labels=""
-            examples.append(rc.InputExample(guid=guid,text_a=text_a,text_b=text_b,label=labels))
+            examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=labels))
         return examples
     def get_labels(self):
         return self.out
